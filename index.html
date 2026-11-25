@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<style>
+    /* ==========================================
+       1. HEADER & WÜSTEN-EFFEKTE
+       ========================================== */
+    header {
+        position: relative;
+        /* Warmer Sonnenuntergangs-Verlauf (Ocker, Gold, tiefes Wüstenrot) */
+        background: linear-gradient(180deg, #2b1d16 0%, #7a3e1d 40%, #d47a2a 75%, #f3b562 100%);
+        color: #ffffff;
+        text-align: center;
+        padding: 110px 20px 150px 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Die große, tiefstehende Wüstensonne */
+    header::before {
+        content: "";
+        position: absolute;
+        bottom: 45px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, #fff3d1 0%, #ffd27d 50%, rgba(255, 180, 60, 0) 75%);
+        border-radius: 50%;
+        opacity: 0.85;
+        z-index: 1;
+    }
+
+    /* Text-Container über der Grafik */
+    .header-content {
+        position: relative;
+        z-index: 3;
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    header h1 {
+        font-family: 'Georgia', serif;
+        font-size: 3em;
+        margin: 0 0 15px 0;
+        letter-spacing: 1px;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    header p {
+        font-family: 'Helvetica Neue', sans-serif;
+        font-size: 1.25em;
+        margin: 0 auto;
+        color: #fdf6ec;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        line-height: 1.5;
+    }
+
+    /* Wüstendünen & Kamel-Karawane als gestochen scharfes SVG am unteren Rand */
+    .desert-silhouette {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 95px;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    /* ==========================================
+       2. STORY-SEKTION & LAYOUT-RASTER
+       ========================================== */
+    .story-section {
+        max-width: 1100px;
+        margin: 0 auto 60px auto;
+        padding: 40px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .story-section h2 {
+        font-family: 'Georgia', serif;
+        font-size: 2em;
+        margin-top: 0;
+        color: #1a1816;
+        border-bottom: 2px solid #b87a3d;
+        padding-bottom: 10px;
+        margin-bottom: 35px;
+    }
+
+    /* Das 2-Spalten-Raster: Links Text, Rechts Bild */
+    .story-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 50% Text, 50% Bild */
+        gap: 40px;
+        align-items: center;
+        margin-bottom: 45px;
+    }
+
+    .story-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .story-text h3 {
+        font-family: 'Georgia', serif;
+        margin-top: 0;
+        color: #7a3e1d;
+    }
+
+    .story-text p {
+        font-family: 'Georgia', serif;
+        line-height: 1.8;
+        font-size: 1.05em;
+        color: #2c2825;
+        margin-top: 0;
+    }
+
+    /* Kompakte Bildvorschau mit Hover-Effekt */
+    .story-image img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        display: block;
+        cursor: zoom-in;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .story-image img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+
+    .image-caption {
+        font-family: 'Helvetica Neue', sans-serif;
+        font-size: 0.85em;
+        color: #666;
+        margin-top: 10px;
+        font-style: italic;
+    }
+
+    /* Umkehrung für Desktop: Bild links, Text rechts */
+    .story-row-reverse .story-image {
+        order: 1;
+    }
+    .story-row-reverse .story-text {
+        order: 2;
+    }
+
+    /* ==========================================
+       3. BILDER-PAARE (2 NEBENEINANDER)
+       ========================================== */
+    .image-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .image-pair img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        cursor: zoom-in;
+        transition: transform 0.25s ease;
+    }
+
+    .image-pair img:hover {
+        transform: scale(1.02);
+    }
+
+    /* ==========================================
+       4. ROUTEN-KARTEN
+       ========================================== */
+    .routes-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .route-card {
+        background: #faf8f5;
+        border-left: 4px solid #b87a3d;
+        padding: 25px;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .route-card h3 {
+        font-family: 'Georgia', serif;
+        margin-top: 0;
+        color: #7a3e1d;
+        font-size: 1.3em;
+    }
+
+    .route-steps {
+        list-style: none;
+        padding: 0;
+        margin: 15px 0 0 0;
+        font-family: 'Helvetica Neue', sans-serif;
+        font-size: 0.95em;
+        line-height: 1.7;
+    }
+
+    .route-steps li {
+        padding-left: 22px;
+        position: relative;
+        margin-bottom: 8px;
+    }
+
+    .route-steps li::before {
+        content: "▸";
+        position: absolute;
+        left: 0;
+        color: #b87a3d;
+        font-weight: bold;
+    }
+
+    /* ==========================================
+       5. RESPONSIVE DESIGN (MOBILGERÄTE)
+       ========================================== */
+    @media (max-width: 768px) {
+        header {
+            padding: 80px 15px 120px 15px;
+        }
+        header h1 {
+            font-size: 2.1em;
+        }
+        header p {
+            font-size: 1.05em;
+        }
+        .story-section {
+            padding: 25px 20px;
+        }
+        .story-row {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .story-image img {
+            height: 240px;
+        }
+        .story-row-reverse .story-image,
+        .story-row-reverse .story-text {
+            order: unset; /* Auf Handys bleibt das Bild logisch oben */
+        }
+        .routes-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .image-pair {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>Sultanat Oman: Das Land der Festungen und Oasen</h1>
+        <p>Eine Reise durch die wilden Wadis, historischen Lehmgassen und den glanzvollen Orient</p>
+    </div>
+
+    <!-- Wüstendünen mit Kamelen -->
+    <svg class="desert-silhouette" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://w3.org">
+        <!-- Hintere Düne (helleres Braun/Ocker) -->
+        <path d="M0,70 Q320,20 720,75 T1440,55 L1440,120 L0,120 Z" fill="#5c2c12" opacity="0.75"/>
+        
+        <!-- Kamel-Karawane auf dem Dünenkamm -->
+        <g transform="translate(880, 26) scale(0.55)" fill="#2b1408">
+            <!-- Kamel 1 -->
+            <path d="M35,45 C35,35 42,25 48,25 C54,25 58,35 63,35 C68,35 72,22 76,20 C79,18 84,18 86,21 C88,24 84,27 81,27 C78,27 76,38 72,45 L72,68 L67,68 L67,50 L58,50 L58,68 L53,68 L53,50 L43,50 L43,68 L38,68 L38,50 C34,50 32,48 35,45 Z"/>
+            <!-- Kamel 2 (etwas dahinter) -->
+            <path transform="translate(65, 4) scale(0.9)" d="M35,45 C35,35 42,25 48,25 C54,25 58,35 63,35 C68,35 72,22 76,20 C79,18 84,18 86,21 C88,24 84,27 81,27 C78,27 76,38 72,45 L72,68 L67,68 L67,50 L58,50 L58,68 L53,68 L53,50 L43,50 L43,68 L38,68 L38,50 C34,50 32,48 35,45 Z"/>
+        </g>
+
+        <!-- Vordere Düne (dunkles Wüstenbraun) -->
+        <path d="M0,90 Q420,125 860,70 T1440,85 L1440,120 L0,120 Z" fill="#2b1408"/>
+    </svg>
+</header>
+
+
+
+<main>
+
+<!-- Beginn der Sektion -->
+<section class="story-section">
+    <h2>Kapitel 1: Anreise &amp; das weiße Maskat</h2>
+
+    <!-- Zeile 1: Alltag & Arbeitswelt / Fahrt ins Hinterland -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Unterwegs zwischen Tradition und Arbeitsalltag</h3>
+            <p>Über den Wolken auf dem Weg in den Oman: Der schneebedeckte Krater des Vulkans Nemrut Dağı in Ostanatolien. Schon der Anflug auf die Arabische Halbinsel bot spektakuläre Ausblicke, bevor wir in der Hauptstadtregion Maskat landeten.<br><br>
+                Schon bei der Ankunft am Flughafen begegneten uns Männer in weißen Gewändern und Turbanen mit einem freundlichen <em>„Welcome to Oman“</em>. Der islamische Friedensgruß <em>„As-salamu alaykum“</em> begegnete uns auf der Straße immer wieder als herzliches Zeichen der Gastfreundschaft.<br><br>
+                Der Alltag im Oman wird auch von unzähligen Arbeitsmigranten aus Ländern wie Bangladesch, Indien oder Äthiopien getragen, die in Hotels als Portiers, in Kfz-Werkstätten, auf den Baustellen sowie in unzähligen kleinen Coffee-Shops das öffentliche Leben am Laufen halten.</p>
+        </div>
+        <div class="story-image">
+            <img src="bild1.jpg" alt="" onclick="openLightbox(this)">
+            <div class="image-caption" style="color: #888; font-size: 0.85em; font-family: sans-serif; text-align: center; margin-top: 5px;">
+         	#travel #flight #mountains #nemrutdagi #clouds #عمان #طيران #جبال #سحاب
+            </div>
+        </div>
+    </div>
+
+    <!-- Zeile 2: Wadi al-Maawil -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Blick aus dem Hotelzimmer</h3>
+            <p>Der erste Blick am Morgen aus dem Hotelzimmer offenbarte sofort den ganz besonderen Charme dieses Landes: Flache, strahlend weiße Villen und Minarette.</p>
+        </div>
+        <div class="story-image">
+            <img src="bild2.jpg" alt="" onclick="openLightbox(this)">
+            <div class="image-caption" style="color: #888; font-size: 0.85em; font-family: sans-serif; text-align: center; margin-top: 5px;">
+         	#muscat #hotelview #oman #architecture #whitecity #minaret #مسقط #فندق #العمارة #بيوت_بيضاء
+            </div>
+        </div>
+    </div>
+
+    <!-- Zeile 3: Harat al-Hujrah -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Fahrt durch die Stadt</h3>
+            <p>Mit dem Mietwagen tauchten wir direkt in das entspannte Alltagsleben ein. Auf breiten Straßen ging es vorbei an kleinen Geschäften, Werkstätten und unzähligen weißen Geländewagen hinaus aus der Stadt. In Barka steht das eindrucksvolle Barka Fort direkt in Meeresnähe. Die Festung aus dem 17. und 18. Jahrhundert zeugt von der strategischen Bedeutung der Region für den Seehandel und den Schutz vor Eindringlingen. Die mächtigen Mauern und Wehrtürme vermitteln sofort das Gefühl, in die echte, lebendige Geschichte des Orients einzutauchen.</p>
+        </div>
+        <div class="story-image">
+            <img src="bild3.jpg" alt="" onclick="openLightbox(this)">
+            <div class="image-caption" style="color: #888; font-size: 0.85em; font-family: sans-serif; text-align: center; margin-top: 5px;">
+         	#oman #roadtrip #carrental #driving #explore #adventure #عمان #قيادة #سيارة #شوارع #مغامرة
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="story-section">
+    <h2>Kapitel 2: Ausflüge – Festungen, Wadis &amp; alte Lehmdörfer</h2>
+
+    <!-- Erste Station: Barka Fort (Bild links, Text rechts) -->
+    <div class="story-row story-row-reverse">
+        <div class="story-text">
+            <h3>Das historische Barka Fort an der Küste</h3>
+            <p>Unser erster Ausflug führte uns entlang der Küste nach Westen in die Stadt Barka. Direkt in Meeresnähe erhebt sich hier das eindrucksvolle Barka Fort. Die gewaltige Festung aus dem 17. und 18. Jahrhundert zeugt von der einstigen strategischen Bedeutung der Region für den Seehandel und den Schutz vor Eindringlingen.</p>
+            <p>Mit seinen mächtigen Lehm- und Steinmauern sowie den charakteristischen runden Wehrtürmen vermittelt das Bauwerk sofort das Gefühl, in die echte, lebendige Geschichte des Orients einzutauchen.</p>
+        </div>
+        <div class="story-image">
+            <img src="bild4.jpg" 
+                 alt="Das historische Barka Fort mit seinen mächtigen Wehrtürmen" 
+                 onclick="openLightbox(this)">
+            <div class="image-caption">Barka Fort: Die imposante Küstenfestung schützte einst den wichtigen Seehandel am Golf von Oman (Klicken zum Vergrößern).
+                <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #barka #fort #oman #history #castle #architecture #قلعة_بركاء #عمان #حصن #تاريخ
+                </span>
+	    </div>
+        </div>
+    </div>
+    
+<!-- Nächste Stationen folgen hier -->
+<!-- Zeile in Kapitel 2: Niembaum (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Kostbares Grün: Der schattenspendende Niembaum</h3>
+        <p>In den weiten, staubtrockenen Ebenen des Oman wirkt jeder einzelne Baum wie eine kleine Oase. Besonders häufig trifft man hier auf den robusten Niembaum (<em>Azadirachta indica</em>), der ursprünglich vom indischen Subkontinent stammt und der extremen Wüstenhitze mühelos trotzt.</p>
+        <p>Mit seiner breiten Krone wirft er einen tiefen, kühlen Schatten auf den hellen Sandboden – ein unverzichtbarer Zufluchtsort in der Mittagssonne. Aus seinen gefiederten Blättern und kleinen Steinfrüchten werden zudem seit Jahrhunderten natürliche Heilmittel und Öle gewonnen.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild5.jpg" 
+                 alt="Mächtige Niembäume werfen dichten Schatten auf den sandigen Platz im Oman" 
+                 onclick="openLightbox(this)">
+            <img src="bild6.jpg" 
+                 alt="Detailaufnahme der gefiederten Blätter und Früchte eines Niembaums" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Willkommener Schattenspender: Der hitzeresistente Niembaum (links) und seine charakteristischen gefiederten Blätter mit kleinen Steinfrüchten im Detail (rechts).
+               <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #neemtree #nature #oman #botany #greenoasis #deserttree #شجرة_النيّم #طبيعة #عمان #نباتات
+                </span>
+         </div>
+    </div>
+</div>
+
+<!-- Zeile in Kapitel 2: Kultur & Ordnung (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Kultur, Glaube und gelebte Ordnung</h3>
+        <p>Überall im Land prägt die friedliche, traditionsbewusste Kultur das tägliche Leben. In fast jedem Viertel ragen kunstvoll verzierte Minarette mit feinen geometrischen Durchbrüchen in den Himmel – ruhige Orientierungspunkte, von denen fünfmal am Tag der Gebetsruf erklingt.</p>
+        <p>Gleichzeitig fällt sofort die außergewöhnliche Sauberkeit und Fürsorge im öffentlichen Raum auf: Selbst Parkplätze und Straßenränder werden mit Dattelpalmen, blühenden Sträuchern und akkurat geschnittenen Bäumen begrünt – liebevoll bewässert und eingefasst von den für den Oman so typischen gelb-schwarzen Bordsteinen.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild7.jpg" 
+                 alt="Kunstvoll verziertes Minarett unter blauem Himmel im Oman" 
+                 onclick="openLightbox(this)">
+            <img src="bild8.jpg" 
+                 alt="Gepflegte Grüninsel mit Dattelpalme und gelb-schwarzem Bordstein im Oman" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Zwei Seiten der omanischen Alltagskultur: Traditionelle Sakralarchitektur (links) und die bis ins Detail gepflegten, bewässerten Grüninseln im Straßenbild (rechts).
+                <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #culture #minaret #mosque #streets #travelphotography #oman #مسجد #ثقافة #عمان #مئذنة #شوارع
+                </span>
+        </div>
+    </div>
+</div>
+
+<!-- Zeile in Kapitel 2: Fahrt vorbei an der Sultan-Qaboos-Moschee in Rustaq -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Monumentale Baukunst am Fuß der Berge</h3>
+        <p>Auf unserer Fahrt weiter ins Landesinnere Richtung Rustaq tauchen entlang der gut ausgebauten Schnellstraßen immer wieder imposante Neubauten auf. Auf den ersten Blick wirken die hellen, zinnenbewehrten Komplexe mit ihren Arkaden fast wie Paläste oder Regierungsgebäude – doch die hohe goldene Kuppel und die beiden schlanken Minarette verraten sofort: Es ist die große Sultan-Qaboos-Moschee von Rustaq.</p>
+        <p>Typisch für den Oman fügt sich selbst diese monumentale Architektur in warmen Sand- und Weißtönen ganz selbstverständlich vor die schroffe, karge Kulisse des Hadschar-Gebirges ein.</p>
+    </div>
+    <div class="story-image">
+        <img src="bild9.jpg" 
+             alt="Die Sultan-Qaboos-Moschee in Rustaq vor dem Hadschar-Gebirge" 
+             onclick="openLightbox(this)">
+        <div class="image-caption">Vorbeifahrt an der Sultan-Qaboos-Moschee in Rustaq: Harmonische omanische Baukunst direkt am Fuß des Hadschar-Gebirges (Klicken zum Vergrößern).
+                <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #rustaq #mosque #sultanqaboosmosque #architecture #hajar-mountains #oman #جامع_السلطان_قابوس #الرستاق #عمان #العمارة
+                </span>
+        </div>
+    </div>
+</div>
+
+<!-- Zeile in Kapitel 2: Nakhal Fort + gelebte Willkommenskultur & Begegnung -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Felsfestung Nakhal Fort &amp; gelebte Willkommenskultur</h3>
+        <p>Weiter im Landesinneren erhebt sich auf einem schroffen Felsvorsprung am Fuß des Hadschar-Gebirges das gewaltige <strong>Nakhal Fort</strong>. Das Besondere an dieser jahrhundertealten Wehranlage: Die Baumeister passten die mächtigen Mauern und runden Türme direkt an die unregelmäßige Form des natürlichen Felsens an.</p>
+        <p>Dass Gastfreundschaft hier kein leeres Wort ist, spürten wir sofort: Schon auf dem Parkplatz kam uns ein Angestellter der Festung freundlich entgegen, um uns persönlich hinein zu lotsen – und im Vorhof begrüßt uns passend dazu eine überdimensionale Skulptur einer traditionellen omanischen Kaffeekanne (<em>Dallah</em>), dem wichtigsten Symbol für Willkommenskultur im Sultanat.</p>
+        <p>Direkt am Fuß der Festung kehrten wir anschließend in einen kleinen Coffee-Shop ein, wo uns ein angestellter Bangladeshi ganz offen ins Gespräch zog. Fernab seiner Heimat erzählte er uns lebhaft, woher er stammte und wie selten er seine Familie zu Hause sehen kann.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild10.jpg" 
+                 alt="Die mächtigen Mauern des Nakhal Forts auf dem Felsmassiv" 
+                 onclick="openLightbox(this)">
+            <img src="bild11.jpg" 
+                 alt="Vorhof des Nakhal Forts mit kunstvoller Kaffeekannen-Skulptur" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Nakhal Fort: Direkt in den Fels gebaute Wehranlage (links) und traditionelle Kaffeekannen-Skulptur als Symbol der Gastfreundschaft im Vorhof (rechts).
+                <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #nakhalfort #dallah #hospitality #oman #fortress #mountains #قلعة_نخل #عمان #دلة #ضيافة #حصن
+                </span>
+         </div>
+    </div>
+</div>
+
+<!-- Zeile in Kapitel 2: Fahrt durch ein Wadi (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Lebensadern aus Stein und Wasser: Unterwegs im Wadi</h3>
+        <p>Auf dem Weg ins Landesinnere durchqueren wir ein typisches <strong>Wadi</strong> – ein breites, ausgetrocknetes Flussbett aus hellem Geröll und Kieselsteinen. Was heute friedlich wie eine Schotterpiste wirkt, verwandelt sich nach seltenen, heftigen Regenfällen im Gebirge binnen Minuten in einen reißenden Strom.</p>
+        <p>Mitten in dieser kargen Flusslandschaft kam uns ein einheimischer Wanderer entgegen und entrichtete einen besonders würdevollen traditionellen Gruß: Mit der rechten Hand berührte er kurz sein Herz und seine Stirn – ein Zeichen tiefer Achtung und Herzlichkeit. Während er meinem Bruder freundschaftlich die Hand reichte, freute er sich sichtlich über meinen landestypischen Gruß mit der erhobenen Handfläche.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild12.jpg" 
+                 alt="Breites steiniges Wadi mit flachem Wasserlauf und Dattelpalmen im Oman" 
+                 onclick="openLightbox(this)">
+            <img src="bild13.jpg" 
+                 alt="Ausgewaschenes Geröllbett und Schutzmauern einer Dattelpalmen-Oase im Wadi" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Typisch omanisches Wadi: Klares Restwasser vor der flachen Furt-Brücke (links) und ausgewaschenes Geröll entlang der geschützten Dattelpalmen-Gärten (rechts).
+            <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #wadi #oman #nature #oasis #palmtrees #riverbed #travelphotography #وادي #طبيعة #عمان #واحة #نخيل
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Zeile in Kapitel 2: Aussicht über die Oasenlandschaft (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Weitblick über grüne Oasen im kargen Bergland</h3>
+        <p>Von einer felsigen Anhöhe aus offenbart sich der ganze Zauber der omanischen Landschaft: Mitten in einer weiten, steinig-trockenen Ebene zieht sich ein dichtes, tiefgrünes Band aus tausenden Dattelpalmen entlang der Wasseradern.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild14.jpg" 
+                 alt="Blick durch zerklüftete Felsen hinunter auf ein Oasendorf im Oman" 
+                 onclick="openLightbox(this)">
+            <img src="bild15.jpg" 
+                 alt="Weites Panorama über einen Dattelpalmenwald vor den Bergen im Oman" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Kontrast aus Stein und Leben: Blick von den Felsen hinunter auf das Oasendorf (links) und der weite Dattelpalmengürtel vor den goldbraunen Bergen (rechts).
+            <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #viewpoint #oasis #village #panoramicview #datepalms #mountains #oman #مناظر_طبيعية #واحة #قرية #نخيل #جبال #عمان
+            </span>
+            </div>
+    </div>
+</div>
+
+<!-- Punkt A: Wachtürme auf den Felsgipfeln (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Wächter auf den Felsgipfeln im Wadi al-Maawil</h3>
+        <p>Überall im Hadschar-Gebirge thronen uralte Wachtürme wie Adlerhorste auf den schroffen Felsgipfeln. Von diesen schwer zugänglichen Beobachtungsposten aus ließen sich einst die Handelswege durch die Täler und die wertvollen Oasen schon aus weiter Ferne überblicken.</p>
+        <p>Besonders eindrucksvoll wirkt das Zusammenspiel aus kargem Fels, tiefgrünen Dattelpalmen und den trutzigen Lehm- und Steintürmen, die bis heute über den Tälern wachen.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild16.jpg" 
+                 alt="Historischer runder Wachturm hoch oben auf einem schroffen Felsgipfel im Oman" 
+                 onclick="openLightbox(this)">
+            <img src="bild17.jpg" 
+                 alt="Doppelturm-Anlage auf einem Felskegel vor Dattelpalmen und Gebirge" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Hoch über dem Tal: Einsamer Beobachtungsturm auf dem Felsgrat (links) und markante Doppelturm-Anlage über der Palmenoase (rechts).
+            <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #watchtower #wadialmaawil #history #mountaintop #fortification #heritage #oman #برج_مراقبة #تاريخ #وادي_المعاول #حصن #عمان
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Punkt B: Lehmturm im Wadi aus der Nähe (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Architektur aus Lehm und Stein: Ein Wehrturm aus nächster Nähe</h3>
+        <p>Mitten in der weiten, steinigen Ebene des Wadis stoßen wir auf einen freistehenden historischen Lehmturm, den wir uns aus nächster Nähe ansehen können. Seine zinnenbewehrte Krone und die schmalen Schießscharten zeugen von einer bewegten Vergangenheit.</p>
+        <p>Ein spannendes Detail fällt beim Blick nach oben sofort auf: Die schwere Holztür liegt mehrere Meter über dem Erdboden – im Ernstfall wurde die Leiter eingezogen, sodass der Turm für Angreifer praktisch uneinnehmbar war.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild18.jpg" 
+                 alt="Freistehender historischer Lehmturm im steinigen Wadi-Becken vor Gebirgskulisse" 
+                 onclick="openLightbox(this)">
+            <img src="bild19.jpg" 
+                 alt="Nahaufnahme eines omanischen Wehrturms mit hochgelegenem Holzeingang" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Durchdachte Verteidigung: Freistehender Wehrturm in der Wadi-Ebene (links) mit dem hochgelegenen, nur per Leiter erreichbaren Eingang (rechts).
+           <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #mudbrick #defensivetower #detail #ancientarchitecture #closeup #fortress #oman #برج_طيني #العمارة_القديمة #حصن #تاريخ_عمان
+            </span>
+           </div>
+    </div>
+</div>
+
+<!-- Zeile in Kapitel 2: Samail Fort (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Hoch über dem Tal: Die Felsenfestung Samail Fort</h3>
+        <p>Auf unserer Fahrt durch das Landesinnere erreichten wir das imposante <strong>Samail Fort</strong> (<em>Hisn Samail</em>), eine der ältesten und strategisch wichtigsten Wehranlagen des Sultanats. Wie aus dem Fels gemeißelt thront die Festung auf einem steilen Bergrücken und überwachte über Jahrhunderte hinweg die wichtige Handelsroute zwischen der Küste und dem Inneren des Omans.</p>
+        <p>Besonders beeindruckend ist die gestufte Architektur: Vom wuchtigen Eingangsportal mit der wehenden Nationalflagge ziehen sich die hohen Lehm- und Steinmauern den schroffen Hang hinauf bis zum runden Hauptturm hoch über dem Tal.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild20.jpg" 
+                 alt="Eingangsportal und Hauptfassade des Samail Forts im Oman" 
+                 onclick="openLightbox(this)">
+            <img src="bild21.jpg" 
+                 alt="Steile Wehrmauer und hoch gelegener Hauptturm des Samail Forts" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Samail Fort: Das befestigte Eingangsportal mit Flagge (links) und die entlang des Felsgrats aufsteigenden Zinnenmauern bis zum Hauptturm (rechts).
+            <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #samailfort #fortress #oman #history #castle #architecture #heritage #حصن_سمائل #عمان #تاريخ #قلعة #العمارة
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Punkt A: Das verlassene Lehmgehöft am Dorfrand (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Vergessene Lehmmauern am Rand der Oase</h3>
+        <p>Am Rande einer kleinen Siedlung stießen wir auf ein verlassenes, weitläufiges Gehöft aus traditionellen Lehmbauten. Zwischen den verfallenen Mauern, offenen Rundbögen und schmalen Gassen wirkt es, als hätten die Bewohner das alte Anwesen erst vor Kurzem aufgegeben und wären in die modernen Steinhäuser nebenan umgezogen.</p>
+        <p>Direkt hinter den bröckelnden Lehmwänden beginnt das tiefe Grün der Dattelpalmen-Oase – ein faszinierender Kontrast zwischen Vergänglichkeit und üppigem Leben.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild22.jpg" 
+                 alt="Verfallene Lehmbögen eines alten Gehöfts vor Dattelpalmen und Gebirge im Oman" 
+                 onclick="openLightbox(this)">
+            <img src="bild23.jpg" 
+                 alt="Enge Gasse zwischen hohen Lehmmauern im Schatten der Mittagssonne" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Verlassenes Anwesen am Dorfrand: Alte Rundbögen vor dem Palmenhain (links) und eine schattige Gasse zwischen den Lehmwänden (rechts).
+            <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #abandonedvillage #mudbrick #ruins #ghosttown #oasis #alleyway #contrast #قرية_مهجورة #بيوت_طين #عمان #أطلال #واحة
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Punkt B: Historische Details & die neugierigen Dorfbewohner (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Alte Holztüren, neugierige Blicke und eine Einladung in die Oase</h3>
+        <p>Beim genaueren Hinsehen entdecken wir in den Ruinen spannende Spuren traditioneller Handwerkskunst: Die dicken Wände bestehen aus handgeformten Lehmziegeln, und im Sand liegt noch ein schweres, verwittertes Holztor mit alten Eisennägeln und Türangeln.</p>
+        <p>Unsere Erkundungstour blieb im Dorf nicht unbemerkt: Erst schlichen sich einige Bewohner neugierig heran, um zu beobachten, was wir dort fotografierten – einer machte schnurstracks kehrt, als er uns bemerkte. Was ein Zeichen des Respektes ist. Ein anderer Einheimischer hingegen kam freundlich auf uns zu und lud uns herzlich ein, seine private Dattelpalmen-Oase von innen anzusehen, was wir aus Rücksicht und Zeitgründen jedoch dankend ablehnten.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild24.jpg" 
+                 alt="Blick durch einen verfallenen Lehm-Türbogen auf geschichtete Lehmziegel" 
+                 onclick="openLightbox(this)">
+            <img src="bild25.jpg" 
+                 alt="Alte verwitterte Holztür mit handgeschmiedeten Eisennägeln im Sand" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Spuren der Vergangenheit: Geschichtete Lehmziegel hinter einem eingestürzten Türbogen (links) und eine alte, eisenbeschlagene Holztür im Staub (rechts).
+            <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #woodendoor #details #craftsmanship #textures #mudbrick #ancientoman #close_up #باب_قديم #تفاصيل #خشب_عتيق #طين #عمان
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Zeile in Kapitel 2: Steinwüste & seltener Schatten (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Endlose Steinwüste und der wertvollste Schatten weit und breit</h3>
+        <p>Abseits der grünen Oasen zeigt der Oman sein raues, unerbittliches Gesicht: Eine weite, flache Stein- und Kieswüste erstreckt sich bis zu den kargen Bergketten des Hadschar-Gebirges. In dieser offenen Ebene gibt es kaum Deckung vor der erbarmungslosen Sonne.</p>
+        <p>Nur vereinzelt trotzen zähe, dornige Akaziensträucher (<em>Samr</em>) der Trockenheit – und genau unter einem solchen einsamen Baum parkten wir unseren Mietwagen im einzigen Schatten weit und breit.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild26.jpg" 
+                 alt="Weißer Mietwagen parkt im Schatten eines einzelnen Akazienbaums in der weiten Steinwüste des Oman" 
+                 onclick="openLightbox(this)">
+            <img src="bild27.jpg" 
+                 alt="Dornige Akaziensträucher in der trockenen Kieswüste vor dem Hadschar-Gebirge" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Rast in der Steinwüste: Unser Mietwagen im einzigen Schatten weit und breit (links) und zähe, dornige Akaziensträucher vor der Gebirgskulisse (rechts).
+            <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #graveldesert #acaciatree #remoteshadow #roadtrip #carrental #hajar #wilderness #صحراء_الحصى #شجرة_السمر #ظل #رحلة #عمان
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Punkt A: Die verfallende Lehmfestung von Izki (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Vergängliche Monumente: Die verfallende Lehmfestung von Izki</h3>
+        <p>Auf unserer Route durch das Landesinnere stießen wir auf die beeindruckenden Ruinen der historischen Festungs- und Lehmsiedlung von <strong>Izki</strong> am Fuß des Hadschar-Gebirges. Schon von Weitem wirken die gewaltigen, gezackten Mauerreste wie ein natürlicher Teil der schroffen Berglandschaft.</p>
+        <p>Aus der Nähe wird sichtbar, warum viele dieser historischen Bauten heute verfallen: Während die unteren Sockel und runden Ecktürme aus geschichteten Natursteinen errichtet wurden, bestehen die oberen Mauern aus sonnengetrocknetem Lehm. Sobald die Lehmgebäude nicht mehr bewohnt und regelmäßig neu verputzt werden, waschen die seltenen, aber heftigen Regenfälle im Gebirge die Wände Jahr für Jahr weiter aus.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild28.jpg" 
+                 alt="Gesamtansicht der verfallenden historischen Lehmfestung in Izki vor dem Hadschar-Gebirge" 
+                 onclick="openLightbox(this)">
+            <img src="bild29.jpg" 
+                 alt="Runder Natursteinturm und vom Regen ausgewaschene Lehmmauern der Festung Izki" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Spuren der Zeit und des Regens: Die weitläufige Festungsruine von Izki vor dem Gebirge (links) und der massive Steinturm neben der erodierten Lehmwand (rechts).
+            <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #izki #mudbrick #fortress #ruins #erosion #stonetower #heritage #oman #إزكي #حارة_البلاد #قلعة_طينية #أطلال #عمان #تاريخ
+            </span>
+         </div>
+    </div>
+</div>
+
+<!-- Punkt B: Architekturelemente im Inneren (2er-Bildkombi links, Text rechts) -->
+<div class="story-row story-row-reverse">
+    <div class="story-text">
+        <h3>Bögen, Säulen und Schießscharten: Einblicke in die Baukunst</h3>
+        <p>Im Inneren der offenen Ruinen lassen sich die durchdachten Architekturelemente der traditionellen omanischen Lehmbaukunst noch erstaunlich gut erkennen. Hohe Spitz- und Rundbögen verbinden die ehemaligen Höfe und Hallen und sorgten einst für angenehme Luftzirkulation in der Sommerhitze.</p>
+        <p>Besonders eindrucksvoll sind die wuchtigen runden Säulen mit ihren eckigen Kapitellen, auf denen noch heute schwere Lehmbögen ruhen, sowie die hoch gelegenen schmalen Schießscharten und kleinen Wandnischen für Öllampen.</p>
+    </div>
+    <div class="story-image">
+        <div class="image-pair">
+            <img src="bild30.jpg" 
+                 alt="Spitzbogen-Arkaden und Schießscharten in den Lehmmauern von Izki" 
+                 onclick="openLightbox(this)">
+            <img src="bild31.jpg" 
+                 alt="Massive Rundsäule mit Lehmbogen und kleinen Wandnischen im Inneren der Ruine" 
+                 onclick="openLightbox(this)">
+        </div>
+        <div class="image-caption">Traditionelle Lehmarchitektur im Detail: Spitzbogen-Arkaden mit darüberliegenden Schießscharten (links) und tragende Rundsäule unter einem massiven Lehmbogen (rechts).
+           <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                #ancientarchitecture #arches #mudcolumns #loopholes #interiordetails #claybuilding #oman #العمارة_القديمة #أقواس #أعمدة #طين #تفاصيل_تاريخية #عمان
+            </span>
+         </div>
+    </div>
+</div>
+</section>
+
+
+<!-- Eigene Sektion: Verlassene Lehmsiedlung & alter Markt -->
+<section class="story-section">
+    <h2>Kapitel 3: Spaziergang durch eine vergessene Welt – Die verlassene Lehmsiedlung</h2>
+
+    <!-- Block 1: Der Eingang in die zweistöckige Geisterstadt (Bild 1 & Bild 3) -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Aufgegeben in den 1970er-Jahren: Ein Dorf aus Lehm und Stein</h3>
+            <p>Abseits der modernen Straßen tauchten wir ein in ein weitläufiges, verlassenes Lehmviertel (<em>Harat</em>) mit alten Markt- und Wohngassen. Bis in die <strong>1970er- und 1980er-Jahre</strong> hinein herrschte hier reges Leben – erst als im Zuge der Modernisierung des Landes direkt nebenan neue Steinhäuser mit Strom, Wasserleitungen und Zufahrten für Autos entstanden, gaben die Bewohner ihre alten Lehmhäuser auf.</p>
+            <p>Gut erkennbar ist noch heute die typische <strong>zweistöckige Bauweise</strong> auf soliden Natursteinsockeln, die den Gebäuden Halt gegen Bodenfeuchtigkeit gaben.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild32.jpg" 
+                     alt="Zweistöckige verfallene Lehmhäuser auf Steinsockeln im Oman" 
+                     onclick="openLightbox(this)">
+                <img src="bild33.jpg" 
+                     alt="Spaziergang durch die sonnenbeschienene Lehmgasse einer verlassenen Siedlung" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Zweistöckige Lehmbauten auf Natursteinfundamenten (links) und Gang durch die verlassene Hauptgasse (rechts).
+                <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #abandonedvillage #souq #ancientmarket #mudbrick #arches #traditionalarchitecture #ruins #oman #قرية_مهجورة #سوق_قديم #طين #أقواس #العمارة_التقليدية #عمان
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Block 2: Natürliche Klimaanlage – Enge Gassen für Schatten (Bild 2 & Bild 6) -->
+    <div class="story-row story-row-reverse">
+        <div class="story-text">
+            <h3>Architektur gegen die Sommerhitze: Enge Gassen als Schattenspender</h3>
+            <p>Was aus heutiger Sicht romantisch-verwinkelt wirkt, folgte einst einer strengen klimatischen Logik: Die Gassen wurden bewusst so schmal angelegt, dass die hohen Lehmwände der gegenüberliegenden Häuser sich fast den ganzen Tag über gegenseitig Schatten spendeten.</p>
+            <p>Zusammen mit den dicken, wärmespeichernden Lehmziegelmauern entstand so eine natürliche Klimaanlage, die das Leben und Handeln im alten Marktviertel selbst bei über 45 Grad im Sommer erträglich machte.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild34.jpg" 
+                     alt="Extrem schmale schattige Gasse zwischen hohen Lehmmauern" 
+                     onclick="openLightbox(this)">
+                <img src="bild35.jpg" 
+                     alt="Lange enge Lehmgasse mit Eingängen zu ehemaligen Läden und Wohnhäusern" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Durchdachtes Mikroklima: Die extrem schmalen Gassen hielten die gnadenlose Sommerhitze fern und spendeten wohltuenden Schatten.</div>
+        </div>
+    </div>
+
+    <!-- Block 3: Der alte Markt & Durchgänge (Bild 5 & Bild 9) -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Wo einst gehandelt wurde: Marktgassen und Torbögen</h3>
+            <p>Entlang der breiteren Wege und unter gemauerten Torbögen lag einst das geschäftige Herz der Siedlung – der alte Markt (<em>Suq</em>). Hinter den verwitterten Holztüren und schlichten Eingängen im Erdgeschoss befanden sich kleine Verkaufsräume, Werkstätten und Lagerräume für Datteln, Gewürze und Alltagsgegenstände, während im oberen Stockwerk die Familien wohnten.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild36.jpg" 
+                     alt="Verlassene Marktgasse mit alten Holztüren und zweistöckigen Lehmfassaden" 
+                     onclick="openLightbox(this)">
+                <img src="bild37.jpg" 
+                     alt="Gasse mit Spitzbogen-Durchgang in der historischen Lehmsiedlung" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Das ehemalige Handelszentrum: Alte Laden- und Hauseingänge entlang der Gasse (links) und ein gemauerter Torbogen als Verbindung zwischen den Vierteln (rechts).</div>
+        </div>
+    </div>
+
+    <!-- Block 4: Einblicke ins Innere – Treppen und Deckenbalken (Bild 4 & Bild 8) -->
+    <div class="story-row story-row-reverse">
+        <div class="story-text">
+            <h3>Ein Blick ins Innere: Steile Treppen und eingestürzte Dächer</h3>
+            <p>Durch offene Durchgänge fällt der Blick in das stille Innere der ehemaligen Wohn- und Geschäftsräume. Über schmale, aus Lehm und Stein geformte Treppen gelangte man hinauf in das Obergeschoss und auf die flachen Dachterrassen, auf denen in heißen Sommernächten oft unter freiem Himmel geschlafen wurde.</p>
+            <p>Wo das Dach nicht mehr standhielt, liegen heute die schweren Deckenbalken aus Palmenholz im Staub der verlassenen Räume.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild38.jpg" 
+                     alt="Schmale Lehmtreppe ins Obergeschoss und Rundbogen im Inneren eines verlassenen Hauses" 
+                     onclick="openLightbox(this)">
+                <img src="bild39.jpg" 
+                     alt="Eingestürzte Deckenbalken aus Palmenholz im Inneren einer Lehmruine" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Spuren des alten Wohnens: Schmale Innentreppe ins zweite Stockwerk (links) und herabgestürzte Deckenbalken aus Palmenholz (rechts).</div>
+        </div>
+    </div>
+
+    <!-- Block 5: Handwerkskunst & versteckte Ornamente (Bild 7 & Bild 10) -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Versteckte Schönheit: Kunstvolle Ornamente hinter schlichten Mauern</h3>
+            <p>Während die Außenfassaden der Lehmhäuser bewusst schlicht und abweisend gestaltet waren, offenbart ein genauer Blick nach oben die Liebe zum Detail: Durch eine hoch gelegene Fensteröffnung entdeckt man die traditionelle Deckenkonstruktion aus Palmblattmatten und Holzbalken, die aufwendig mit geometrischen Ornamenten bemalt wurden.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild40.jpg" 
+                     alt="Blick durch eine enge Gasse auf ein zweistöckiges Lehmhaus mit typischen Fensteröffnungen" 
+                     onclick="openLightbox(this)">
+                <img src="bild41.jpg" 
+                     alt="Blick durch ein Lehmfenster auf kunstvoll mit Ornamenten bemalte Deckenbalken" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Kunsthandwerk im Verborgenen: Schlichte Lehmfassade mit Lüftungsöffnungen (links) und der Blick durch das Fenster auf die ornamental bemalten Deckenbalken (rechts).</div>
+        </div>
+    </div>
+    
+    <!-- Block 5/2: Handwerkskunst & versteckte Wandmalereien (3 Detailbilder) -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Versteckte Schönheit: Historische Wandmalereien hinter schlichten Mauern</h3>
+            <p>Während die Außenfassaden der Lehmhäuser bewusst schlicht und abweisend gestaltet waren, offenbart ein genauer Blick nach oben durch die Fensteröffnungen im Obergeschoss eine echte Überraschung: Im ehemaligen Empfangsraum (<em>Majlis</em>) haben sich bis heute farbenfrohe Wandmalereien in Gelb- und Blautönen erhalten.</p>
+            <p>Neben geometrischen Friesen prangt eine stilisierte <strong>Dattelpalme</strong> – das wichtigste Symbol für Leben und Wohlstand im Oman – an der Wand, darüber ruht die traditionelle Deckenkonstruktion aus Palmblattmatten und kunstvoll verzierten Holzbalken.</p>
+        </div>
+        <div class="story-image">
+                <img src="bild42.jpg" 
+                     alt="Historische Wandmalerei mit einer Dattelpalme und geometrischen Ornamenten hinter einem Lehmfenster" 
+                     onclick="openLightbox(this)"
+                     style="width: 100%; height: 210px; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); cursor: zoom-in;">
+            <div style="margin-top: 12px;">
+                <img src="bild43.jpg" 
+                     alt="Blick durch ein Lehmfenster auf kunstvoll mit Ornamenten bemalte Deckenbalken" 
+                     onclick="openLightbox(this)"
+                     style="width: 100%; height: 210px; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); cursor: zoom-in;">
+            </div>
+            <div class="image-caption">Kunsthandwerk im Verborgenen.
+                <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #majlis #fresco #wallpainting #artisan #datepalm #culturalheritage #oman #مجلس #فنون_تقليدية #رسوم_جدارية #نقوش #نخيل #تراث_عمان
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sektion: Unsere Reiserouten ab Maskat -->
+<section class="story-section">
+    <h2>Unsere Ausflugsrouten im Überblick</h2>
+
+    <!-- Oberer Teil: Text links, Samail Gate rechts -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Durch monumentale Stadttore ins Herz des Omans</h3>
+            <p>Von unserem Ausgangspunkt in Maskat aus erschließen sich die historischen Festungen und Oasen des Nordens auf gut ausgebauten Überlandstraßen. Ein besonderes Markenzeichen auf diesen Routen sind die gewaltigen, im traditionellen Festungsstil errichteten Stadttore wie hier das <strong>Stadttor von Samail</strong>, die wie moderne Triumphbögen die Zufahrten zu den großen Oasenstädten markieren.</p>
+            <p>Geografisch lassen sich unsere Entdeckungstouren in zwei klassische Tagesrouten entlang und durch das Hadschar-Gebirge gliedern:</p>
+        </div>
+        <div class="story-image">
+            <img src="bild44.jpg" 
+                 alt="Das monumentale Stadttor von Samail über der Schnellstraße im Oman" 
+                 onclick="openLightbox(this)">
+            <div class="image-caption">Tor ins Landesinnere: Das imposante Stadttor von Samail überspannt die Hauptroute durch das Hadschar-Gebirge (Klicken zum Vergrößern).
+                <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #samailgate #citygate #monumental #highway #hajar #fortressstyle #oman #بوابة_سمائل #بوابة_المدينة #طريق_سريع #جبال_الحجر #عمان #معالم
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unterer Teil: Die 2 Routen als übersichtliche Karten nebeneinander -->
+    <div class="routes-grid">
+        <!-- Route 1 -->
+        <div class="route-card">
+            <h3>Route 1: Küste &amp; Westliches Hadschar-Vorland</h3>
+            <p style="font-size: 0.95em; color: #555; margin-top: 0;">Von der Batinah-Küste hinein zu den Bergfestungen und Wachtürmen:</p>
+            <ul class="route-steps">
+                <li><strong>Start – Maskat (Al Ghubrah):</strong> Fahrt entlang der Küstenstraße nach Nordwesten.</li>
+                <li><strong>Barka Fort:</strong> Erste Station an der historischen Küstenfestung.</li>
+                <li><strong>Wadi al-Maawil:</strong> Abstecher ins steinige Flussbett, vorbei an alten Gipfel-Wachtürmen.</li>
+                <li><strong>Nakhal Fort:</strong> Besuch der mächtigen Felsfestung am Fuß des Gebirges.</li>
+                <li><strong>Rustaq:</strong> Vorbeifahrt an der großen Sultan-Qaboos-Moschee vor den Bergen.</li>
+            </ul>
+        </div>
+
+        <!-- Route 2 -->
+        <div class="route-card">
+            <h3>Route 2: Durch die „Samail-Lücke“ ins Landesinnere</h3>
+            <p style="font-size: 0.95em; color: #555; margin-top: 0;">Auf der historischen Handelsachse mitten durch das Hadschar-Gebirge:</p>
+            <ul class="route-steps">
+                <li><strong>Start – Maskat:</strong> Fahrt nach Südwesten durch das tief eingeschnittene Gebirgstal.</li>
+                <li><strong>Stadttor &amp; Samail Fort:</strong> Durchfahrt durch das monumentale Tor zur Felsenfestung <em>Hisn Samail</em>.</li>
+                <li><strong>Steinwüste &amp; Oasenränder:</strong> Rast unter einsamen Akazienbäumen vor der Bergkulisse.</li>
+                <li><strong>Izki &amp; verlassene Lehmsiedlungen:</strong> Erkundung der erodierten Lehmfestung und der alten Markt- und Wohngassen (<em>Harat</em>).</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Sektion: Die Mangrovenküste -->
+<section class="story-section">
+    <h2>Kapitel 4: Zwischen schroffen Felsen und Gezeiten – Die Mangrovenküste</h2>
+
+    <!-- Punkt A: Anfahrt & das Ökosystem der Mangroven (Bild 1 & Bild 2) -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Über staubige Pisten zu einer verborgenen Küstenwelt</h3>
+            <p>Abseits der ausgebauten Küstenstraßen führte uns eine staubige Schotterpiste entlang schroffer, geschichteter Felswände hinunter zu einer geschützten Meereslagune (wie man sie rund um <em>Bandar Al Khairan</em> südöstlich von Maskat findet).</p>
+	    <p>Auf den Felsen gibt es absolut keine Vegetation. Sie bestehen aus Ur-Meeresboden, der vor rund 90 Millionen Jahren über das Land geschoben wurde. Ophiolith bricht scharfkantig und ist für Pflanzenwurzeln weitgehend ungeeignet. Eine natürliche Bodenbildung findet auch nicht statt. Starkregen spühlt alles weg.</p>
+            <p>Hier zeigt sich eine überraschend grüne Seite des Sultanats: Direkt im salzigen Küstenwasser wurzeln zähe, hitzeresistente <strong>Mangroven</strong> (<em>Avicennia marina</em>). Im flachen Uferschlick erkennt man deutlich ihre dicht stehenden, fingerartigen <strong>Atemwurzeln</strong>, mit denen die Pflanzen bei Ebbe Sauerstoff aufnehmen – ein unverzichtbarer Lebensraum für Fische, Krabben und Küstenvögel.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild45.jpg" 
+                     alt="Mietwagen auf einer Schotterpiste vor einer steilen Felswand auf dem Weg zur Lagune" 
+                     onclick="openLightbox(this)">
+                <img src="bild46.jpg" 
+                     alt="Blick zwischen Mangrovenbüschen und ihren Atemwurzeln über die ruhige Küstenlagune" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Kontrast aus Stein und Wasser: Anfahrt entlang der kargen Küstenfelsen (links) und Blick durch die Mangroven samt ihren Atemwurzeln im Uferschlick über die Lagune (rechts).</div>
+        </div>
+    </div>
+
+    <!-- Punkt B: Gezeitenwechsel & Erkundung im Watt (Bild 4 & Bild 5) -->
+    <div class="story-row story-row-reverse">
+        <div class="story-text">
+            <h3>Ebbe in der Lagune: Der Küstenschlick</h3>
+            <p>Bei Ebbe verwandelt sich die ruhige Bucht in eine weitläufige Wattlandschaft: Das Meerwasser zieht sich zurück und legt fein gezeichnete Sand- und Schlickbänke frei, während am gegenüberliegenden Fuß der kargen Berge das tiefgrüne Band der Mangrovenwälder leuchtet.</p>
+            <p>Über die dunklen Uferfelsen hinunter stiegen wir direkt an den Rand des feuchten Watts, um die kleinen Bewohner des Gezeitenbereichs – unzählige winzige Winkerkrabben und Meeresschnecken – aus nächster Nähe zu beobachten.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild47.jpg" 
+                     alt="Weitläufige Schlickbänke bei Ebbe in der Lagune vor den kargen Küstenbergen im Oman" 
+                     onclick="openLightbox(this)">
+                <img src="bild48.jpg" 
+                     alt="Erkundung des flachen Uferschlicks entlang der dunklen Küstenfelsen bei Ebbe" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Im Rhythmus der Gezeiten: Freigelegte Schlickbänke vor dem grünen Mangrovengürtel.
+                <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #mangroves #lagoon #lowtide #mudflats #tides #coastline #naturephotography #oman #منجروف #القرم #بحيرة_شاطئية #جزر #طبيعة_عمان #مد_وجزر
+                </span>
+             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sektion: Der Al-Alam-Palast in Maskat -->
+<section class="story-section">
+    <h2>Kapitel 5: Glanzvolles Maskat – Der Al-Alam-Palast</h2>
+
+    <!-- Punkt A: Palastfassade & hitzeresistente Bepflanzung (Bild 1 & Bild 3) -->
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Farbenfrohe Eleganz und blühende Gärten trotz Wüstenhitze</h3>
+            <p>Den krönenden Abschluss unserer Reise bildete der Besuch am <strong>Al-Alam-Palast</strong>, dem zeremoniellen Sitz des Sultans im historischen Herzen von Alt-Maskat. Statt auf überladenen Prunk setzt die Architektur auf makellose Sauberkeit, großzügige Plätze und die markanten blau-goldenen Säulen der Hauptfassade.</p>
+            <p>Besonders beeindruckend ist die kunstvolle Bepflanzung rund um den Palastplatz: Trotz der intensiven Sonne und Trockenheit leuchten entlang der Terrassen farbenfrohe Blumenrabatten, während schlanke, hitzeresistente Bäume vor den kargen Felswänden des Küstengebirges akkurate grüne Akzente setzen.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild49.jpg" 
+                     alt="Hauptfassade des Al-Alam-Palastes in Maskat mit blau-goldenen Säulen und Blumenbeeten" 
+                     onclick="openLightbox(this)">
+                <img src="bild50.jpg" 
+                     alt="Blick aus den Arkaden des Al-Alam-Palastes auf einen hitzeresistenten Baum vor den Küstenbergen" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Würdevolle Pracht in Maskat: Der Al-Alam-Palast mit seinen blühenden Terrassenbeeten (links) und Blick auf die hitzeresistenten Bäume vor den schroffen Felsen (rechts).</div>
+        </div>
+    </div>
+
+    <!-- Punkt B: Die endlosen Arkadengänge (Bild 4/5 & Bild 2) -->
+    <div class="story-row story-row-reverse">
+        <div class="story-text">
+            <h3>Stille Symmetrie: Durch die hohen Marmorkolonnaden</h3>
+            <p>Eingerahmt wird der weitläufige Vorplatz von kilometerlangen, spitzbogigen Säulengängen aus hellem Naturstein und spiegelglatt poliertem Marmor. Unter den hohen Gewölben herrscht selbst in der Mittagssonne eine angenehme, fast feierliche Kühle und Stille.</p>
+            <p>Der Blick durch die streng symmetrischen Arkadenreihen verdeutlicht, was Maskat so einzigartig macht: eine moderne, repräsentative Baukunst, die traditionelle islamische Formen aufgreift, ohne jemals protzig zu wirken.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild51.jpg" 
+                     alt="Perspektivischer Blick durch den hohen spitzbogigen Säulengang des Al-Alam-Palastes" 
+                     onclick="openLightbox(this)">
+                <img src="bild52.jpg" 
+                     alt="Seitlicher Blick durch die mächtigen Arkadenpfeiler auf den gespiegelten Marmorboden" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Architektur der Ruhe: Die monumentalen, schattigen Kolonnaden rund um den Palastplatz mit ihren spiegelnden Marmorböden.</div>
+        </div>
+    </div>
+
+
+
+
+<!-- Sektion: Bewegte Eindrücke mit Lightbox-Funktion -->
+<section class="story-section">
+    <h2>Bewegte Eindrücke: Unterwasserwelt &amp; Roadtrip-Atmosphäre</h2>
+    <p style="margin-bottom: 30px;">Klicke auf ein Video, um es in der großen Vollbild-Ansicht abzuspielen.</p>
+
+    <div class="routes-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;">
+        
+        <!-- Video 1: Kleine Fische -->
+        <div class="route-card" style="padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <!-- Der Klick-Container simuliert den Player -->
+                <div onclick="openVideoLightbox(this)" data-vimeo-src="https://player.vimeo.com/video/1249618288?autopause=0" data-title="Leben im flachen Küstenwasser" style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #111; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 40px rgba(0,0,0,0.8);">
+                    <!-- Großer Play-Button im Zentrum -->
+                    <div style="width: 60px; height: 60px; background: rgba(52, 152, 219, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; padding-left: 5px; box-sizing: border-box; transition: transform 0.2s ease;">▶</div>
+                    <span style="position: absolute; bottom: 10px; color: #aaa; font-size: 0.85em; font-family: sans-serif;">Video laden...</span>
+                </div>
+                <h3 style="margin: 15px 0 6px 0; font-size: 1.15em;">Leben im flachen Küstenwasser</h3>
+                <p style="font-size: 0.95em; color: #555; margin: 0 0 15px 0;">Kleine Fischschwärme tummeln sich im glasklaren, warmen Wasser am Golf von Oman.</p>
+            </div>
+            <div style="text-align: center; border-top: 1px solid #eee; padding-top: 10px;">
+                <span style="color: #888; font-size: 0.8em; font-family: sans-serif; display: block;">#oman #underwater #fish #sea #gulfofoman #عمان #تحت_الماء #أسماك</span>
+            </div>
+        </div>
+
+        <!-- Video 2: Erste Autofahrt -->
+        <div class="route-card" style="padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <div onclick="openVideoLightbox(this)" data-vimeo-src="https://player.vimeo.com/video/1249627686?autopause=0" data-title="Roadtrip durch das Sultanat (Teil 1)" style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #111; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 40px rgba(0,0,0,0.8);">
+                    <div style="width: 60px; height: 60px; background: rgba(52, 152, 219, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; padding-left: 5px; box-sizing: border-box;">▶</div>
+                    <span style="position: absolute; bottom: 10px; color: #aaa; font-size: 0.85em; font-family: sans-serif;">Video laden...</span>
+                </div>
+                <h3 style="margin: 15px 0 6px 0; font-size: 1.15em;">Roadtrip durch das Sultanat (Teil 1)</h3>
+                <p style="font-size: 0.95em; color: #555; margin: 0 0 15px 0;">Blick aus dem fahrenden Mietwagen auf die gut ausgebauten Straßen.</p>
+            </div>
+            <div style="text-align: center; border-top: 1px solid #eee; padding-top: 10px;">
+                <span style="color: #888; font-size: 0.8em; font-family: sans-serif; display: block;">#oman #roadtrip #driving #muscat #travelvideo #عمان #رحلة_طريق #قيادة #مسقط</span>
+            </div>
+        </div>
+
+        <!-- Video 3: Zweite Autofahrt -->
+        <div class="route-card" style="padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <div onclick="openVideoLightbox(this)" data-vimeo-src="https://player.vimeo.com/video/1249628497?autopause=0" data-title="Fahrt in die Bergwelt (Teil 2)" style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #111; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 40px rgba(0,0,0,0.8);">
+                    <div style="width: 60px; height: 60px; background: rgba(52, 152, 219, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; padding-left: 5px; box-sizing: border-box;">▶</div>
+                    <span style="position: absolute; bottom: 10px; color: #aaa; font-size: 0.85em; font-family: sans-serif;">Video laden...</span>
+                </div>
+                <h3 style="margin: 15px 0 6px 0; font-size: 1.15em;">Fahrt in die Bergwelt (Teil 2)</h3>
+                <p style="font-size: 0.95em; color: #555; margin: 0 0 15px 0;">Die Pisten schlängeln sich tiefer in das gewaltige Hadschar-Gebirge.</p>
+            </div>
+            <div style="text-align: center; border-top: 1px solid #eee; padding-top: 10px;">
+                <span style="color: #888; font-size: 0.8em; font-family: sans-serif; display: block;">#oman #mountains #hajar #offroad #adventure #عمان #جبال #الحجر #مغامرة #سفر</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+<!-- Abschluss-Sektion: Kleine Alltagsdetails & Abschied -->
+<section class="story-section">
+    <h2>Ausklang: Kleine Alltagsdetails &amp; Abschied vom Sultanat</h2>
+
+    <div class="story-row">
+        <div class="story-text">
+            <h3>Zweisprachige Schilder, schwarz-weiße Masten und ein letztes „Qif“</h3>
+            <p>Manchmal sind es die unscheinbaren Dinge am Straßenrand, die ein Reiseland unverwechselbar machen: Im gesamten Oman fallen sofort die einheitlich schwarz-weiß lackierten Schilderpfosten sowie die zweisprachige Beschilderung ins Auge – vom Zebrastreifen-Schild vor Dattelpalmen bis zum markanten roten Stoppschild mit dem arabischen <strong>„قف“ (<em>Qif</em> – Halt)</strong>.</p>
+            <p>Nach eindrucksvollen Tagen zwischen einsamen Wadis, verlassenen Lehmdörfern, der stillen Mangrovenküste und dem glanzvollen Maskat heißt es auch für uns: <em>Qif</em> – innehalten, die Eindrücke sacken lassen und Abschied nehmen von einem Land voller stiller Würde und Gastfreundschaft.</p>
+        </div>
+        <div class="story-image">
+            <div class="image-pair">
+                <img src="bild53.jpg" 
+                     alt="Zweisprachiges Stoppschild auf Arabisch (Qif) und Englisch im Oman" 
+                     onclick="openLightbox(this)">
+                <img src="bild54.jpg" 
+                     alt="Blaues Fußgängerüberweg-Schild vor Dattelpalmen im Oman" 
+                     onclick="openLightbox(this)">
+            </div>
+            <div class="image-caption">Typisch omanischer Straßenrand: Zweisprachiges Stoppschild „Qif / STOP“ (links) und Fußgänger-Hinweis vor Dattelpalmen (rechts) – jeweils auf den landestypischen schwarz-weiß gestreiften Masten.
+              <span style="color: #888; font-size: 0.85em; font-family: sans-serif; display: block; margin-top: 5px;">
+                    #trafficsigns #stopsign #qif #bilingual #roadside #details #streetphotography #oman #لوحات_إرشادية #علامة_قف #قف #شوارع_عمان #تفاصيل #سفر
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+</main>
+
+
+<!-- Erweiterte Vollbild-Lightbox für Bilder UND Videos -->
+<div id="lightbox" onclick="closeLightbox()" style="display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.94); justify-content: center; align-items: center; flex-direction: column; padding: 20px; box-sizing: border-box; cursor: zoom-out;">
+    <span style="position: absolute; top: 20px; right: 30px; color: #ffffff; font-size: 36px; font-weight: bold; font-family: sans-serif; cursor: pointer;">&times;</span>
+    
+    <!-- Container für Bilder -->
+    <img id="lightbox-img" src="" alt="" style="display: none; max-width: 95vw; max-height: 85vh; width: auto; height: auto; object-fit: contain; border-radius: 6px; box-shadow: 0 5px 30px rgba(0,0,0,0.8);">
+    
+    <!-- Container für Videos (Vimeo iFrame im Breitbildformat) -->
+    <div id="lightbox-video-container" style="display: none; width: 100%; max-width: 900px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; box-shadow: 0 5px 30px rgba(0,0,0,0.8);">
+        <iframe id="lightbox-iframe" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="width: 100%; height: 100%;"></iframe>
+    </div>
+
+    <p id="lightbox-caption" style="color: #f5f5f5; font-family: 'Helvetica Neue', sans-serif; margin-top: 15px; font-size: 1em; text-align: center; max-width: 850px;"></p>
+</div>
+
+
+<!-- Zurück nach oben Schaltfläche -->
+    <div style="text-align: center; margin: 50px 0 30px 0;">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" 
+                style="padding: 12px 24px; font-size: 16px; font-family: sans-serif; background-color: #2c5e50; color: white; border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: background 0.2s;"
+                onmouseover="this.style.backgroundColor='#1f443a'" 
+                onmouseout="this.style.backgroundColor='#2c5e50'">
+            ↑ Zurück nach oben
+        </button>
+    </div>
+
+    <!-- Fußzeile mit Besucherzähler & einklappbarem Impressum -->
+    <footer style="text-align: center; padding: 20px 20px 40px 20px; font-family: sans-serif; border-top: 1px solid #eee; margin-top: 40px;">
+        
+        <!-- Integrierter Live-Besucherzähler -->
+<div id="YFB_"><script type="text/javascript" async src="https://www.yogizaehler.de/Besucherzaehler/z_003.php?id=5443955533&besucher&f1=lime&f2=$DDDDDD&f3=$8B78FE&f4=$5050BB&f5=white"></script></div><noscript><img src="https://www.yogizaehler.de/Besucherzaehler/z_000.php?id=5443955533" alt=""></noscript>
+
+<br><br>
+
+        <!-- Einklappbares Impressum -->
+        <div style="max-width: 600px; margin: 0 auto;">
+            <details style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 10px; cursor: pointer; text-align: left;">
+                <summary style="font-weight: bold; color: #333; outline: none; user-select: none; padding: 5px;">⚖️ Impressum anzeigen / ausblenden</summary>
+                <div class="impressum-content" style="padding: 15px 5px 5px 5px; font-size: 0.9em; color: #444; line-height: 1.5; cursor: default;" onclick="event.stopPropagation();">
+                    <p style="margin: 0 0 12px 0;"><strong>Diensteanbieter gemäß § 5 DDG:</strong><br>
+                    Michael Thate<br>
+                    Malteserstr. 9<br>
+                    12247 Berlin</p>
+                    
+                    <p style="margin: 0;"><strong>Kontakt:</strong><br>
+                    E-Mail: o00mt@fn.de</p>
+                </div>
+            </details>
+        </div>
+    </footer>
+
+    <!-- Erweiterte Vollbild-Lightbox für Bilder UND Videos -->
+    <div id="lightbox" onclick="closeLightbox()" style="display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.94); justify-content: center; align-items: center; flex-direction: column; padding: 20px; box-sizing: border-box; cursor: zoom-out;">
+        <span style="position: absolute; top: 20px; right: 30px; color: #ffffff; font-size: 36px; font-weight: bold; font-family: sans-serif; cursor: pointer;">&times;</span>
+        
+        <!-- Container für Bilder -->
+        <img id="lightbox-img" src="" alt="" style="display: none; max-width: 95vw; max-height: 85vh; width: auto; height: auto; object-fit: contain; border-radius: 6px; box-shadow: 0 5px 30px rgba(0,0,0,0.8);">
+        
+        <!-- Container für Videos (Vimeo iFrame im Breitbildformat) -->
+        <div id="lightbox-video-container" style="display: none; width: 100%; max-width: 900px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; box-shadow: 0 5px 30px rgba(0,0,0,0.8);">
+            <iframe id="lightbox-iframe" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="width: 100%; height: 100%;"></iframe>
+        </div>
+
+        <p id="lightbox-caption" style="color: #f5f5f5; font-family: sans-serif; margin-top: 15px; font-size: 1em; text-align: center; max-width: 850px;"></p>
+    </div>
+
+    <!-- Das vereinte, intelligente Steuerungs-Skript für Bilder und Videos -->
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxVideoContainer = document.getElementById('lightbox-video-container');
+        const lightboxIframe = document.getElementById('lightbox-iframe');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+
+        // Funktion A: Öffnet ganz normal deine Urlaubsfotos
+        function openLightbox(imgElement) {
+            lightboxIframe.src = ""; // Video-Sicherheitshalber leeren
+            lightboxVideoContainer.style.display = 'none';
+            
+            lightboxImg.src = imgElement.src;
+            lightboxImg.style.display = 'block';
+            
+            const captionDiv = imgElement.parentElement.querySelector('.image-caption');
+            lightboxCaption.textContent = captionDiv ? captionDiv.textContent : imgElement.alt;
+            lightbox.style.display = 'flex';
+        }
+
+        // Funktion B: Öffnet die Vimeo-Videos im Riesen-Format
+        function openVideoLightbox(element) {
+            lightboxImg.src = ""; // Bild-Sicherheitshalber leeren
+            lightboxImg.style.display = 'none';
+            
+            const videoUrl = element.getAttribute('data-vimeo-src');
+            lightboxIframe.src = videoUrl;
+            lightboxVideoContainer.style.display = 'block';
+            
+            lightboxCaption.textContent = element.getAttribute('data-title');
+            lightbox.style.display = 'flex';
+        }
+
+        // Schließt die Lightbox und stoppt automatisch den Ton des Videos
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+            lightboxIframe.src = ""; // Verhindert, dass das Video im Hintergrund heimlich weiterläuft
+        }
+
+        // ESC-Taste zum Schließen
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+    
+
+</body>
+</html>
